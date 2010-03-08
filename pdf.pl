@@ -1,10 +1,10 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 use utf8;
 
 use Encode;
+use lib './pdfj';
 use PDFJ 'EUC';
 
 # 用紙の設定( 1pt = 0.35278mm で計算)
@@ -34,11 +34,13 @@ my $oTextStyle = TStyle(font => $oFont, fontsize => $fSize);
 my $oPStyle = PStyle(size=>$iHeight, linefeed=>$linefeed, align=>'b', preskip=>"35%", postskip=>"35%");
 
 # テキストファイルの読み込み
+print "read text\n";
 open(FH, "<", $ARGV[0]);
 my @lines  = <FH>;
 close(FH);
 
 # 文ごとに段落の配列を作成
+print "make paragraphes\n";
 my @Paragraphes = ();
 for my $line (@lines){
   chomp($line);
@@ -48,12 +50,16 @@ for my $line (@lines){
 }
 
 # 段落の配列をブロックにまとめる
+print "make block\n";
 my $oBlock = Block('R', \@Paragraphes, BStyle());
 
 # ブロックをページ毎に分割してページに割り付ける
+my $i=0;
 for my $oB ($oBlock->break($iWidth)) {
   my $oPage = $pdfDoc->new_page();
   $oB->show($oPage, $iWidth+$PaperSL, $iHeight+$PaperSD, 'rt');
+  print $i++;
+  print "page \n";
 }
 
 # PDFを出力
