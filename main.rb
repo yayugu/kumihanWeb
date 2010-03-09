@@ -1,14 +1,15 @@
 def makePDF(text)
-  rndFile = "data/" + rand(100000000).to_s
+  rndFile = "./data/" + rand(100000000).to_s
   open(rndFile, "w"){|fp| fp.write(text)}
-  puts rndFile
-  IO.popen("perl pdf.pl #{rndFile}") do |io|
-    puts io.read
-  end
+  #IO.popen("perl pdf.pl #{rndFile}") do |io|
+  #  puts io.read
+  #end
   rndFile + ".pdf"
 end
 
-post '/' do
+#post '/' do
+
+post '' do
   s = makePDF params[:mainText]
   return <<-EOF
 <html>
