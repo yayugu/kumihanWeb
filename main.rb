@@ -1,5 +1,5 @@
 def makePDF(text)
-  rndFile = "data/" + rand(100000000).to_s
+  rndFile = "data/" + (Time.now.to_f*1000000).to_i.to_s
   open("public/" + rndFile, "w"){|fp| fp.write(text)}
   IO.popen("perl pdf.pl public/#{rndFile}") do |io|
     puts io.read
