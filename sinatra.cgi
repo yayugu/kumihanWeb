@@ -38,6 +38,6 @@ module Rack
 end
 
 load "main.rb"
-set :run => false, :env => :cgi
-Rack::Handler::CGI.run Sinatra.application
+#set :run => false, :env => :cgi
+#Rack::Handler::CGI.run Sinatra.application
 

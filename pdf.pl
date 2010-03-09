@@ -5,7 +5,7 @@ use utf8;
 
 use Encode;
 use lib './pdfj';
-use PDFJ 'EUC';
+use PDFJ 'UTF8';
 
 # 用紙の設定( 1pt = 0.35278mm で計算)
 my $PaperW  = 298;  #文庫の横(105mm) 
@@ -25,7 +25,7 @@ my $linefeed ='170%'; #ラインフィード
 my $pdfDoc = PDFJ::Doc->new(1.3, $PaperW, $PaperH); # PDF ver1.3
 
 # フォントオブジェクトを作成
-my $oFont = $pdfDoc->new_font('Ryumin-Light', 'EUC-V', 'Times-Roman');
+my $oFont = $pdfDoc->new_font('Ryumin-Light', 'UniJIS-UCS2-HW-V', 'Times-Roman');
 
 # テキストスタイルオブジェクトを作成
 my $oTextStyle = TStyle(font => $oFont, fontsize => $fSize);
@@ -35,7 +35,8 @@ my $oPStyle = PStyle(size=>$iHeight, linefeed=>$linefeed, align=>'b', preskip=>"
 
 # テキストファイルの読み込み
 print "read text\n";
-open(FH, "<", $ARGV[0]);
+my $text_file = $ARGV[0];
+open(FH, "<", $text_file);
 my @lines  = <FH>;
 close(FH);
 
@@ -44,7 +45,7 @@ print "make paragraphes\n";
 my @Paragraphes = ();
 for my $line (@lines){
   chomp($line);
-  $line = encode("eucjp", '　') unless $line;
+  $line = encode("utf8", '　') unless $line;
   my $oTexe = Text($line, $oTextStyle);
   push @Paragraphes, Paragraph($oTexe, $oPStyle);
 }
@@ -63,4 +64,5 @@ for my $oB ($oBlock->break($iWidth)) {
 }
 
 # PDFを出力
-$pdfDoc->print('sample.pdf');
+$pdfDoc->print($text_file . ".pdf")
+  or die "can't save pdf";
