@@ -22,10 +22,11 @@ my $fSize    = 8;     #フォントサイズ
 my $linefeed ='170%'; #ラインフィード
 
 # pdfオブジェクトを作成
-my $pdfDoc = PDFJ::Doc->new(1.3, $PaperW, $PaperH); # PDF ver1.3
+my $pdfDoc = PDFJ::Doc->new(1.6, $PaperW, $PaperH); # PDF ver1.3
 
 # フォントオブジェクトを作成
-my $oFont = $pdfDoc->new_font('Ryumin-Light', 'UniJIS-UCS2-HW-V', 'Times-Roman');
+#my $oFont = $pdfDoc->new_font('IPAfont/ipam.ttf', 'UniJIS-UCS2-HW-V', 'Times-Roman');
+my $oFont = $pdfDoc->new_font('/mnt/c/rb/msmincho.ttc:0', 'UniJIS-UCS2-HW-V', 'Times-Roman');
 
 # テキストスタイルオブジェクトを作成
 my $oTextStyle = TStyle(font => $oFont, fontsize => $fSize);
